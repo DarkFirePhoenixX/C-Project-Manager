@@ -1,0 +1,155 @@
+@page "/{CompanyUri}/project/{projectUri}/ticket/{ticketId}/manage"
+@inject ITicket _ticketService
+@inject INavService _navService
+@inject IUser _userService
+
+@if (_ticket == null || _users == null)
+{
+    <Loader/>
+}
+else
+{
+    <div class="flex flex-col lg:w-2/4 m-auto">
+        <div class="flex flex-grow flex-col bg-gray-100 p-5 mt-5">
+            <h1 class="text-2xl text-center">Update @_ticket.Name ticket</h1>
+            <EditForm Model="@_ticket" OnValidSubmit="@HandleValidSubmit">
+                <div class="mb-2">
+                    <label for="name" class="text-grey-darker inline-block mb-2">Name</label>
+                    <input @bind="_ticket.Name" type="text" id="name" name="name" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Ticket Name" required maxlength="25" minlength="3"/>
+                </div>
+                <div class="mb-2">
+                    <label for="description" class="text-grey-darker inline-block mb-2">Description</label>
+                    <textarea @bind="_ticket.Description" id="description" name="description" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Ticket description" required></textarea>
+                </div>
+                <div class="mb-2">
+                    <label for="priority" class="text-grey-darker inline-block mb-2">Priority</label>
+                    <InputSelect @bind-Value="_ticket.Priority" id="priority" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white" name="priority" required>
+                        <option value="@Priority.High">
+                            High
+                        </option>
+                        <option value="@Priority.Medium">
+                            Medium
+                        </option>
+                        <option value="@Priority.Low">
+                            Low
+                        </option>
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
+                    <label for="priority" class="text-grey-darker inline-block mb-2">Status</label>
+                    <InputSelect @bind-Value="_ticket.Status" id="priority" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white" name="priority" required>
+                        <option value="@Status.ToDo">
+                            To-Do
+                        </option>
+                        <option value="@Status.InProgress">
+                            In Progress
+                        </option>
+                        <option value="@Status.Completed">
+                            Completed
+                        </option>
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
+                    <label for="assignee" class="text-grey-darker inline-block mb-2">Assignee</label>
+                    <select @onchange="OnAssigneeChanged" id="assignee" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white" name="assignee" required>
+                        <option value="">Select User</option>
+                        @foreach (var user in _users)
+                        {
+                            if (_ticket.Assignee.Id == user.Id)
+                            {
+                                <option selected="selected" value="@user.Id">@(user.Name ?? user.UserName)</option>
+                            }
+                            else
+                            {
+                                <option value="@user.Id">@(user.Name ?? user.UserName)</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="flex flex-row justify-between mb-2">
+                    <div class="w-full mr-3">
+                        <label for="due-date" class="text-grey-darker inline-block mb-2">Due Date</label>
+                        <input @bind="_ticket.DueDate" type="datetime-local" id="due-date" name="due-date" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full m-0 p-2.5" placeholder="31/10/2021 13:45" required/>
+                    </div>
+                    <div class="w-full ml-3">
+                        <label for="eta" class="text-grey-darker inline-block mb-2">Estimated time</label>
+                        <div class="flex flex-wrap items-stretch w-full mb-4 relative">
+                            <input @bind="_ticket.EstimatedTime" type="number" id="eta" name="eta" class="flex-shrink flex-grow leading-normal w-px flex-1 border h-10 border-grey-light rounded rounded-r-none px-3 relative" placeholder="15 hours" required max="23" min="0"/>
+                            <div class="flex -mr-px">
+                                <span class="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">Hours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full">Update Ticket</button>
+            </EditForm>
+        </div>
+        <button @onclick="DeleteTicket" class="self-end text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 my-5 w-48">Delete Ticket</button>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public String CompanyUri { get; set; } = null!;
+
+    [Parameter]
+    public String ProjectUri { get; set; } = null!;
+
+    [Parameter]
+    public String TicketId { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private TicketDto? _ticket;
+
+    private List<UserDto>? _users;
+
+    private void OnAssigneeChanged(ChangeEventArgs e) {
+        foreach (var user in _users!.Where(user => (String?)e.Value == user.Id))
+        {
+            _ticket!.Assignee = user;
+            return;
+        }
+    }
+
+    private async void HandleValidSubmit() {
+        _ticket!.TicketUrl = ProjectUri;
+        await _ticketService.Update(Guid.Parse(TicketId), _ticket);
+        _navService.Reload();
+    }
+
+    private async void DeleteTicket() {
+        try
+        {
+            Boolean deleted = await _ticketService.Delete(_ticket!.Id);
+            if (deleted)
+            {
+                Toast?.AddNotification("Success", $"Ticket ({_ticket!.Name}) was deleted");
+                _navService.NavigateToProjects(true);
+            }
+            else
+            {
+                Toast?.AddNotification("Error", $"Ticket ({_ticket!.Name}) was not deleted, Try Again!", "red");
+            }
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
+        try
+        {
+            _users = await _userService.GetUsersByProject(ProjectUri);
+            _ticket = await _ticketService.Get(Guid.Parse(TicketId));
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+}

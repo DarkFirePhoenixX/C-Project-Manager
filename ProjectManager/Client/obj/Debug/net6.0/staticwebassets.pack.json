@@ -1,0 +1,77 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\lowerstas\\.nuget\\packages\\chartjs.blazor.fork\\2.0.2\\contentFiles\\any\\netstandard2.1\\wwwroot\\ChartJsBlazorInterop.js",
+      "PackagePath": "staticwebassets\\ChartJsBlazorInterop.js"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\obj\\Debug\\net6.0\\build-gz\\oBcIu+T5.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\502.html",
+      "PackagePath": "staticwebassets\\502.html"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\css\\custom.css",
+      "PackagePath": "staticwebassets\\css\\custom.css"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\css\\tailwind.css",
+      "PackagePath": "staticwebassets\\css\\tailwind.css"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\icons\\logo.svg",
+      "PackagePath": "staticwebassets\\icons\\logo.svg"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\icons\\user.svg",
+      "PackagePath": "staticwebassets\\icons\\user.svg"
+    },
+    {
+      "Id": "C:\\Users\\lowerstas\\Desktop\\C# Project-Manager\\ProjectManager\\Client\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.ProjectManager.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.ProjectManager.Client.props",
+      "PackagePath": "build\\ProjectManager.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.ProjectManager.Client.props",
+      "PackagePath": "buildMultiTargeting\\ProjectManager.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.ProjectManager.Client.props",
+      "PackagePath": "buildTransitive\\ProjectManager.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

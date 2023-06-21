@@ -1,0 +1,129 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = ProjectManager.Client
+build_property.RootNamespace = ProjectManager.Client
+build_property.ProjectDir = C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Client\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Client
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Authentication.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Company/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueVxDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Company/Manage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFueVxNYW5hZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Forecast.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9yZWNhc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Project/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdFxDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Project/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdFxJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Project/Manage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdFxNYW5hZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Project/View.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdFxWaWV3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Ticket/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGlja2V0XENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/Ticket/Manage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGlja2V0XE1hbmFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/User/Manage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNYW5hZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Pages/User/Report.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxSZXBvcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/CompanyEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBhbnlFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/CompanyUser.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBhbnlVc2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/ForecastChart.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEZvcmVjYXN0Q2hhcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Loader.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvYWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Navigation/Breadcrumbs.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdmlnYXRpb25cQnJlYWRjcnVtYnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Navigation/CompanySelect.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdmlnYXRpb25cQ29tcGFueVNlbGVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Navigation/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdmlnYXRpb25cTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Navigation/NavOptions.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdmlnYXRpb25cTmF2T3B0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/ProjectUser.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFByb2plY3RVc2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlZGlyZWN0VG9Mb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/Toast.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRvYXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/Shared/UserTicket.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFVzZXJUaWNrZXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lowerstas/Desktop/C\# Project-Manager/ProjectManager/Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

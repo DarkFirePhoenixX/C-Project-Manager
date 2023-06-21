@@ -1,0 +1,78 @@
+﻿@inject NavigationManager _navigationManager
+@inject INavService _navService
+@implements IDisposable
+
+@foreach (NavRoutes option in Options)
+{
+    if (option.AdminOnly && !_navService.IsAdmin()) return;
+    if (option.Selected)
+    {
+        <a class="text-black-900 block px-3 py-2 rounded-md text-base font-medium" href="@option.HrefWithCompany">
+            @option.Name
+        </a>
+    }
+    else
+    {
+        <a class="text-gray-100 hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium" href="@option.HrefWithCompany">
+            @option.Name
+        </a>
+    }
+}
+
+@code {
+
+    private NavRoutes[] Options { get; set; } = Array.Empty<NavRoutes>();
+
+    private NavRoutes[] OrgOptions { get; set; } =
+        {
+            new NavRoutes
+            {
+                Name = "Home",
+                Href = "/"
+            },
+            new NavRoutes
+            {
+                Name = "Projects",
+                Href = "/project"
+            },
+            new NavRoutes
+            {
+                Name = "Reports",
+                Href = "/report",
+                AdminOnly = true
+            }
+        };
+
+    private void UpdateUi() {
+        Options = OrgOptions;
+
+        for (Int32 i = 0; i < Options.Length; i++)
+        {
+            if (_navService.GetCurrentCompany().Uri == "create/company")
+            {
+                Options[i].HrefWithCompany = "#";
+            }
+            else
+            {
+                Options[i].HrefWithCompany = Options[i].Href != "/" ? $"/{_navService.GetCurrentCompany().Uri}{Options[i].Href}" : "/";
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void UpdateUi(Object? sender, LocationChangedEventArgs locationChangedEventArgs) {
+        UpdateUi();
+    }
+
+    protected override void OnInitialized() {
+        _navService.OnChange += UpdateUi;
+        _navigationManager.LocationChanged += UpdateUi;
+        UpdateUi();
+    }
+
+    public void Dispose() {
+        _navService.OnChange -= UpdateUi;
+        _navigationManager.LocationChanged -= UpdateUi;
+    }
+
+}

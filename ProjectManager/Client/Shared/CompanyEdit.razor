@@ -1,0 +1,36 @@
+@inject IUser _userService
+@inject INavService _navService
+
+<div class="w-100 m-4 p-2 border border-black bg-white">
+    @UserCompany.Company.Name
+    <button @onclick="LeaveCompany" class="bg-red-400 text-white rounded-full h-6 px-3 float-right ml-3">Leave</button>
+    @if (UserCompany.Role == UserRole.Admin)
+    {
+        <a href="/@UserCompany.Company.Uri/manage">
+            <button class="bg-purple-500 text-white rounded-full h-6 px-3 float-right ml-3">Edit</button>
+        </a>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public UserCompanyDto UserCompany { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private async void LeaveCompany() {
+        try
+        {
+            CompanyDto company = await _userService.LeaveCompany(UserCompany.CompanyId);
+            Toast?.AddNotification("Success", $"Successfully left the company {company.Name}", "green");
+            _navService.Reload();
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+}

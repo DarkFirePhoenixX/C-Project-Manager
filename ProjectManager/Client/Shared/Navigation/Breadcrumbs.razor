@@ -1,0 +1,76 @@
+@inject NavigationManager _navigationManager
+@inject INavService _navService
+@implements IDisposable
+
+<div class="my-5">
+    <ol class="list-reset flex text-grey-dark">
+        @foreach (Breadcrumb url in _urLs)
+        {
+            <li>
+                <a href="@url.Url" class="font-bold">@url.Name</a>
+            </li>
+            <li>
+                <span class="mx-2">></span>
+            </li>
+        }
+
+    </ol>
+</div>
+
+@code {
+
+    private List<Breadcrumb> _urLs = new List<Breadcrumb>();
+
+    private void UpdateUi() {
+        _urLs.Clear();
+        String[]? currentPath = _navigationManager.ToBaseRelativePath(_navigationManager.Uri).Split("/");
+        IEnumerable<String>? subPaths = currentPath.Skip(1);
+
+        if (_navService.CurrentUrl() == "user/settings")
+            _urLs.Add(new Breadcrumb
+            {
+                Name = "User Settings",
+                Url = "/"
+            });
+        else
+            _urLs.Add(new Breadcrumb
+            {
+                Name = _navService.GetCurrentCompany().Name,
+                Url = "/"
+            });
+
+        if (_navService.GetCurrentCompany().Uri != "create/company")
+        {
+            String? url = "/" + _navService.GetCurrentCompany().Uri;
+            foreach (var path in subPaths)
+            {
+                if (path == "")
+                    continue;
+                url += "/" + path;
+                _urLs.Add(new Breadcrumb
+                {
+                    Name = _navService.TitleCase(path),
+                    Url = url
+                });
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private void UpdateUi(Object? sender, LocationChangedEventArgs locationChangedEventArgs) {
+        UpdateUi();
+    }
+
+    protected override void OnInitialized() {
+        _navService.OnChange += UpdateUi;
+        _navigationManager.LocationChanged += UpdateUi;
+        UpdateUi();
+    }
+
+    public void Dispose() {
+        _navService.OnChange -= UpdateUi;
+        _navigationManager.LocationChanged -= UpdateUi;
+    }
+
+}

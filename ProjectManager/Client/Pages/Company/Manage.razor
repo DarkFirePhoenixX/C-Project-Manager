@@ -1,0 +1,127 @@
+@page "/{CompanyUri}/manage"
+@inject ICompany _companyService
+@inject INavService _navService
+@inject IUser _userService
+
+@if (_company == null)
+{
+    <Loader/>
+}
+else
+{
+    <div class="flex flex-col lg:w-2/4 m-auto mb-5">
+        <div class="flex flex-grow flex-col bg-gray-100 p-5 w-full">
+            <h1 class="text-2xl text-center">Update @_company.Name</h1>
+            <EditForm Model="@_company" OnValidSubmit="@HandleValidSubmit">
+                <div class="mb-6">
+                    <label for="name" class="text-grey-darker inline-block mb-2">Name</label>
+                    <input @bind="_company.Name" type="text" id="name" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="My Company" required maxlength="25" minlength="3"/>
+                </div>
+                <label for="company-uri" class="text-grey-darker inline-block mb-2">Main Directory Name</label>
+                <div class="flex flex-wrap items-stretch w-full mb-4 relative">
+                    <input @bind="_company.Uri" id="company-uri" type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light rounded rounded-l-none px-3 relative" placeholder="Company" maxlength="20" minlength="5"/>
+                </div>
+                <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full">Update</button>
+            </EditForm>
+        </div>
+        <div class="flex flex-grow flex-col bg-gray-100 p-5 w-full m-auto mt-10">
+            <h1 class="text-2xl">Manage Users</h1>
+            <EditForm Model="@_userInvite" OnValidSubmit="@SentInviteToUser" class="flex ml-auto -mt-8 mr-2 mb-3">
+                <input @bind="_userInvite.Email" type="email" class="border-grey-light rounded rounded-lg px-3 w-48 mr-3" placeholder="user@example.com" required/>
+                <button class="bg-blue-300 hover:bg-blue-400 font-semibold py-0 px-4 rounded inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                    </svg>
+                    <span>Invite</span>
+                </button>
+            </EditForm>
+            @if (_company.Users != null)
+            {
+                @foreach (var user in _company.Users)
+                {
+                    <CompanyUser User="@user.User" Role="@user.Role" CompanyId="@_company.Id"/>
+                }
+            }
+        </div>
+        <button @onclick="DeleteCompany" class="self-end text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 w-48">Delete Company</button>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public String CompanyUri { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private CompanyDto? _company;
+
+    protected override async Task OnInitializedAsync() {
+        if (!_navService.IsAdmin(true)) return;
+        try
+        {
+            Guid companyId = _navService.GetCompanyByUri(CompanyUri).Id;
+            _company = await _companyService.Get(companyId);
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+    private async void HandleValidSubmit() {
+        Guid companyId = _navService.GetCompanyByUri(CompanyUri).Id;
+        try
+        {
+            _company = await _companyService.Update(companyId, _company!);
+            Toast?.AddNotification("Success", $"Company ({_company.Name}) was updated", "green");
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+            return;
+        }
+        _navService.SetCurrentCompany(_company.Uri, true);
+    }
+
+    private readonly UserInvite _userInvite = new UserInvite();
+
+    private async void SentInviteToUser() {
+        try
+        {
+            _userInvite.CompanyId = _company!.Id;
+            UserCompanyDto userCompany = await _userService.SetUserCompany(_userInvite);
+            Toast?.AddNotification("Success", $"User ({userCompany.User.Name}) was added to {_company.Name}", "green");
+            _navService.Reload();
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+    private async void DeleteCompany() {
+        Guid companyId = _navService.GetCompanyByUri(CompanyUri).Id;
+
+        try
+        {
+            Boolean deleted = await _companyService.Delete(companyId);
+            if (deleted)
+            {
+                Toast?.AddNotification("Success", $"Company ({_company!.Name}) was deleted");
+                _navService.NavigateToHome(true);
+            }
+            else
+            {
+                Toast?.AddNotification("Error", $"Company ({_company!.Name}) was not deleted, Try Again!", "red");
+            }
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+}

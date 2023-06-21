@@ -1,0 +1,12 @@
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\bin\Debug\net6.0\ProjectManager.Shared.deps.json
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\bin\Debug\net6.0\ProjectManager.Shared.dll
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\bin\Debug\net6.0\ProjectManager.Shared.pdb
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.csproj.AssemblyReference.cache
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.AssemblyInfoInputs.cache
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.AssemblyInfo.cs
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.csproj.CoreCompileInputs.cache
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.dll
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\refint\ProjectManager.Shared.dll
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ProjectManager.Shared.pdb
+C:\Users\lowerstas\Desktop\C# Project-Manager\ProjectManager\Shared\obj\Debug\net6.0\ref\ProjectManager.Shared.dll

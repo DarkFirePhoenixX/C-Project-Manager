@@ -1,0 +1,101 @@
+@page "/{Company}/report"
+@inject INavService _navService
+@inject IReport _reportService
+
+
+<div class="flex flex-col m-auto mb-5">
+    <div class="flex flex-row justify-between mb-2 w-96 ml-auto mr-10 xl:mr-48">
+        <div class="w-full mr-3">
+            <label for="startDate" class="text-grey-darker inline-block mb-2">Start Date</label>
+            <input @bind="StartDate" type="date" id="startDate" name="startDate" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full m-0 p-2.5"/>
+        </div>
+        <div class="w-full ml-3">
+            <label for="endDate" class="text-grey-darker inline-block mb-2">End Date</label>
+            <input @bind="EndDate" type="date" id="endDate" name="endDate" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full m-0 p-2.5"/>
+        </div>
+    </div>
+    @if (_timeSeries.Count == 0)
+    {
+        <Loader/>
+    }
+    else
+    {
+        <div class="w-100 xl:w-3/6 m-auto">
+            <ForecastChart Data="@_projectEstimates" Labels="@_timeSeries" Title="Estimated Number of Projects" Label="Projects" BorderColor="#3e95cd" BackgroundColor="#7bb6dd"/>
+        </div>
+        <div class="w-100 xl:w-3/6 m-auto">
+            <ForecastChart Data="@_peopleEstimates" Labels="@_timeSeries" Title="Estimated Number of People Required" Label="People" BorderColor="#3e95cd" BackgroundColor="#7bb6dd"/>
+        </div>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public String Company { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+    private DateTime _startDate = DateTime.Today;
+
+    private DateTime StartDate
+    {
+        get => _startDate;
+        set
+        {
+            _startDate = value;
+            if (_startDate.CompareTo(_endDate) > 0)
+            {
+                _endDate = _startDate.AddDays(30);
+            }
+            FetchNewData();
+        }
+    }
+
+    private DateTime _endDate = DateTime.Today.AddDays(30);
+
+    private DateTime EndDate
+    {
+        get => _endDate;
+        set
+        {
+            _endDate = value;
+            FetchNewData();
+        }
+    }
+    private readonly List<int> _projectEstimates = new List<int>();
+    private readonly List<int> _peopleEstimates = new List<int>();
+    private readonly List<DateTime> _timeSeries = new List<DateTime>();
+
+    protected override void OnInitialized()
+    {
+        if(!_navService.IsAdmin(true)) return;
+        FetchNewData();
+    }
+
+    private async void FetchNewData()
+    {
+        try
+        {
+            var forecast = await _reportService.Forecast(_startDate, _endDate, _navService.GetCurrentCompany().Id);
+            _peopleEstimates.Clear();
+            _projectEstimates.Clear();
+            _timeSeries.Clear();
+            double estimate = forecast.CurrentProject + (forecast.Offset * forecast.ProjectGrowthRate);
+            for (int i = 0; i < forecast.NumberOfDays; i++)
+            {
+                estimate += forecast.ProjectGrowthRate;
+                _projectEstimates.Add(Convert.ToInt32(estimate));
+                _peopleEstimates.Add((int) Math.Ceiling(Convert.ToInt32(estimate) * forecast.PeoplePerProject));
+                _timeSeries.Add(_startDate.AddDays(i));
+            }
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+}

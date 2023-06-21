@@ -1,0 +1,37 @@
+﻿@inject INavService _navService
+@inject NavigationManager _navigationManager
+@implements IDisposable
+
+<select value="@CurrentCompany" @onchange="SetCompany" class="block w-52 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 mx-auto" name="company">
+    @foreach (var company in _navService.CompanyList)
+    {
+        <option value=@company.Uri>@company.Name</option>
+    }
+</select>
+
+@code {
+
+    private String CurrentCompany { get; set; } = "";
+
+    private void SetCompany(ChangeEventArgs e) {
+        if (e.Value != null) CurrentCompany = e.Value.ToString()!;
+
+        Boolean inHomePage = _navService.CurrentUrl() != "";
+        _navService.SetCurrentCompany(CurrentCompany, inHomePage);
+    }
+
+    private void UpdateUi() {
+        CurrentCompany = _navService.GetCurrentCompany().Uri;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized() {
+        CurrentCompany = _navService.GetCurrentCompany().Uri;
+        _navService.OnChange += UpdateUi;
+    }
+
+    public void Dispose() {
+        _navService.OnChange -= UpdateUi;
+    }
+
+}

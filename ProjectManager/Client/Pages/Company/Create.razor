@@ -1,0 +1,40 @@
+@page "/create/company"
+@inject ICompany _companyService
+@inject INavService _navService
+
+<div class="flex flex-grow flex-col bg-gray-100 p-5 md:w-4/5 xl:w-2/5 m-auto mb-5">
+    <h1 class="text-2xl text-center">Create a new company</h1>
+    <EditForm Model="@_company" OnValidSubmit="@HandleValidSubmit">
+        <div class="mb-6">
+            <label for="name" class="text-grey-darker inline-block mb-2">Name</label>
+            <input @bind="_company.Name" type="text" id="name" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="My Company" required maxlength="25" minlength="3"/>
+        </div>
+        <label for="company-uri" class="text-grey-darker inline-block mb-2">Main Directory Name</label>
+        <div class="flex flex-wrap items-stretch w-full mb-4 relative">
+            <input @bind="_company.Uri" id="company-uri" type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light rounded rounded-l-none px-3 relative" placeholder="Company" required maxlength="20" minlength="5"/>
+        </div>
+        <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full">Submit</button>
+    </EditForm>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private readonly CompanyDto _company = new CompanyDto();
+
+    private async void HandleValidSubmit() {
+        try
+        {
+            CompanyDto company = await _companyService.Create(_company);
+            Toast?.AddNotification("Success", $"New Company ({company.Name}) was created", "green");
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+            return;
+        }
+        _navService.NavigateToHome(true);
+    }
+}

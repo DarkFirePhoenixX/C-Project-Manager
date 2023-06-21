@@ -1,0 +1,127 @@
+@page "/{CompanyUri}/project/{ProjectUri}"        
+@inject ITicket _ticketService
+@inject IProject _projectService
+@inject INavService _navService
+@implements IDisposable
+
+<div>
+    <div class="flex flex-row-reverse mb-5">
+        <a href="@CompanyUri/project/@ProjectUri/ticket/create">
+            <button class="p-2 pl-5 pr-5 bg-blue-500 border-blue-300 text-gray-100 text-md rounded-lg focus:border-4 mr-14">Create Ticket</button>
+        </a>
+        @if (_navService.IsAdmin())
+        {
+            <a href="@CompanyUri/project/@ProjectUri/manage">
+                <button class="p-2 pl-5 pr-5 bg-yellow-600 border-yellow-300 text-gray-100 text-md rounded-lg focus:border-4 mr-5">Manage Project</button>
+            </a>
+        }
+    </div>
+
+    <div class="flex flex-wrap justify-around justify-items-stretch h-4/5 mb-5" style="min-height: 70vh;">
+        <div class="bg-purple-300 border-2 border-black mt-5" style="width: 405px;">
+            <div class="bg-blue-100"><h2 class="text-center text-2xl border-b-2 border-black font-bold">Tasks</h2></div>
+            <div>
+                @foreach (var ticket in TodoTickets)
+                {
+                    <a href="@CompanyUri/project/@ProjectUri/ticket/@ticket.Id/manage">
+                        <UserTicket Ticket="@ticket" HideColour="true"/>
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="bg-yellow-200 border-2 border-black mt-5" style="width: 405px;">
+           <div class="bg-blue-100"><h2 class="text-center text-2xl border-b-2 border-black font-bold">In-Progress</h2></div>
+            <div>
+                @foreach (var ticket in InProgressTickets)
+                {
+                    <a href="@CompanyUri/project/@ProjectUri/ticket/@ticket.Id/manage">
+                        <UserTicket Ticket="@ticket" HideColour="true"/>
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="bg-green-600 border-2 border-black mt-5" style="width: 405px;">
+            <div class="bg-blue-100"><h2 class="text-center text-2xl border-b-2 border-black font-bold">Completed</h2></div>
+            <div>
+                @foreach (var ticket in CompletedTickets)
+                {
+                    <a href="@CompanyUri/project/@ProjectUri/ticket/@ticket.Id/manage">
+                        <UserTicket Ticket="@ticket" HideColour="true"/>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public String CompanyUri { get; set; } = null!;
+
+    [Parameter]
+    public String ProjectUri { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private List<TicketDto> TodoTickets { get; } = new List<TicketDto>();
+
+    private List<TicketDto> InProgressTickets { get; } = new List<TicketDto>();
+
+    private List<TicketDto> CompletedTickets { get; } = new List<TicketDto>();
+
+    private async void UpdateUi() {
+        try
+        {
+            ProjectDto project;
+            try
+            {
+                project = await _projectService.Get(CompanyUri, ProjectUri);
+            }
+            catch (Exception)
+            {
+                Toast?.AddNotification("Project not found", "It looks like the selected project isn't available under this company", "yellow");
+                _navService.NavigateToProjects(false);
+                return;
+            }
+            List<TicketDto> tickets = await _ticketService.ListTicketsByProject(project.Id);
+            TodoTickets.Clear();
+            InProgressTickets.Clear();
+            CompletedTickets.Clear();
+            foreach (var ticket in tickets)
+            {
+                switch (ticket.Status)
+                {
+                    case Status.ToDo:
+                        TodoTickets.Add(ticket);
+                        break;
+                    case Status.InProgress:
+                        InProgressTickets.Add(ticket);
+                        break;
+                    case Status.Completed:
+                        CompletedTickets.Add(ticket);
+                        break;
+                    default:
+                        Toast?.AddNotification("Something went wrong", $"Ticket with invalid status, Name={ticket.Name} Status={ticket.Status}");
+                        break;
+                }
+            }
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+    protected override void OnInitialized() {
+        UpdateUi();
+        _navService.OnChange += UpdateUi;
+    }
+
+    public void Dispose() {
+        _navService.OnChange -= UpdateUi;
+    }
+
+}

@@ -1,0 +1,147 @@
+@page "/{CompanyUri}/project/{ProjectUri}/manage"
+@inject IProject _projectService
+@inject IUser _userService
+@inject INavService _navService
+
+@if (_project == null || _users == null)
+{
+    <Loader/>
+}
+else
+{
+    <div class="flex flex-col lg:w-2/4 m-auto mb-5">
+        <div class="flex flex-grow flex-col bg-gray-100 p-5">
+            <h1 class="text-2xl text-center">Update @_project.Name Project</h1>
+            <EditForm Model="@_project" OnValidSubmit="@HandleValidSubmit">
+                <div class="mb-2">
+                    <label for="name" class="text-grey-darker inline-block mb-2">Name</label>
+                    <input @bind="_project.Name" type="text" id="name" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="My Project" required maxlength="25" minlength="3"/>
+                </div>
+                <div class="mb-2">
+                    <label for="status" class="text-grey-darker inline-block mb-2">Status</label>
+                    <InputSelect @bind-Value="_project.Status" id="status" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white" name="status" required>
+                        <option value="ToDo">
+                            To-Do
+                        </option>
+                        <option value="InProgress">
+                            In-Progress
+                        </option>
+                        <option value="Completed">
+                            Completed
+                        </option>
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
+                    <label for="due-date" class="text-grey-darker inline-block mb-2">Due Date</label>
+                    <input @bind="_project.DueDate" type="date" id="due-date" name="due-date" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full m-0 p-2.5" placeholder="31/10/2021 13:45" required/>
+                </div>
+                <label for="project-uri" class="text-grey-darker inline-block mb-2">Project Directory Name</label>
+                <div class="flex flex-wrap items-stretch w-full mb-4 relative">
+                    <input @bind="_project.Uri" type="text" id="project-uri" name="project-uri" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light rounded rounded-l-none px-3 relative" pattern="[a-z0-9-]+" placeholder="my-project" required maxlength="20" minlength="5"/>
+                </div>
+                <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full">Submit</button>
+            </EditForm>
+        </div>
+        <div class="flex flex-grow flex-col bg-gray-100 p-5 w-full m-auto mt-10">
+            <h1 class="text-2xl">Manage Users</h1>
+            <div class="flex ml-auto -mt-8 mr-2 mb-3">
+                <select class="mr-2 w-36" @bind="SelectedUserId">
+                    <option value="">Select new user</option>
+                    @foreach (var user in _users)
+                    {
+                        <option value="@user.Id">@user.Name</option>
+                    }
+                </select>
+                <button onclick="@(() => SentInviteToUser())" class="bg-blue-300 hover:bg-blue-400 font-semibold py-0 px-4 rounded inline-flex items-center">
+                    <span>Add</span>
+                </button>
+            </div>
+            @foreach (var user in _project.Users!)
+            {
+                <ProjectUser User="@user" Project="@_project"/>
+            }
+        </div>
+        <button @onclick="DeleteProject" class="self-end text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 w-48">Delete Project</button>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public String CompanyUri { get; set; } = null!;
+
+    [Parameter]
+    public String ProjectUri { get; set; } = null!;
+
+    [CascadingParameter]
+    public Toast? Toast { get; set; }
+
+    private ProjectDto? _project;
+    private List<UserDto>? _users;
+
+    private String? SelectedUserId { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        if (!_navService.IsAdmin(true)) return;
+        try
+        {
+            _project = await _projectService.Get(CompanyUri, ProjectUri);
+            _users = await _userService.GetUsersByCompany(_navService.GetCurrentCompany().Id);
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+
+    private async void HandleValidSubmit() {
+        try
+        {
+            _project!.Company = _navService.GetCurrentCompany();
+            _project = await _projectService.Update(_project!.Id, _project!);
+            Toast?.AddNotification("Success", $"Project ({_project.Name}) was updated", "green");
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+            return;
+        }
+        StateHasChanged();
+    }
+
+
+    private async void SentInviteToUser() {
+        try
+        {
+            UserDto user = await _userService.ModifyProject(_project!.Id, SelectedUserId!);
+            Toast?.AddNotification("Success", $"User ({user.Name}) was added to the project {_project.Name}", "green");
+            _navService.Reload();
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+    private async void DeleteProject() {
+        try
+        {
+            Boolean deleted = await _projectService.Delete(_project!.Id);
+            if (deleted)
+            {
+                Toast?.AddNotification("Success", $"Project ({_project!.Name}) was deleted");
+                _navService.NavigateToProjects(true);
+            }
+            else
+            {
+                Toast?.AddNotification("Error", $"Project ({_project!.Name}) was not deleted, Try Again!", "red");
+            }
+        }
+        catch (Exception e)
+        {
+            Toast?.Exception(e);
+        }
+    }
+
+}
